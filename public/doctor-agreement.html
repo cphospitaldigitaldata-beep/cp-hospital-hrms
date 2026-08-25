@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Service Agreement - CP Hospital</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; background: #f4f6f9; margin: 0; padding: 20px; }
+        .container { max-width: 900px; background: #fff; margin: auto; padding: 40px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        h1, h3 { text-align: center; color: #0056b3; }
+        .section { margin-bottom: 20px; }
+        ul { padding-left: 20px; }
+        .footer-box { background: #f9f9f9; padding: 20px; border-left: 4px solid #0056b3; margin-top: 30px; }
+        .btn-submit { background: #28a745; color: white; padding: 12px 25px; border: none; font-size: 16px; cursor: pointer; border-radius: 5px; display: block; width: 100%; margin-top: 20px; }
+        .btn-submit:hover { background: #218838; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>CP HOSPITAL, GANGAPUR CITY, RAJASTHAN</h1>
+    <h3>DOCTOR SERVICE AGREEMENT & TERMS & CONDITIONS</h3>
+    <p><strong>Document No.:</strong> CP/HR/DR/T&C/01 | <strong>Version:</strong> 01</p>
+    <hr>
+
+    <div class="section">
+        <h3>1. PARTIES TO THE AGREEMENT</h3>
+        <p>This agreement is made between <strong>CP Hospital</strong> and <strong>Dr. [Doctor Name]</strong> (Specialization: [Specialization], Reg. No: [Reg No]).</p>
+    </div>
+
+    <div class="section">
+        <h3>2. APPOINTMENT & PROFESSIONAL STATUS</h3>
+        <ul>
+            <li>The Doctor shall practice strictly within the scope of their recognized qualification and NMC/State Medical Council registration.</li>
+            <li>Any change, suspension, or cancellation of medical license must be reported to the hospital immediately.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h3>3. OPD & EMERGENCY SERVICES</h3>
+        <ul>
+            <li><strong>OPD Timings:</strong> Summer (09:00 AM - 07:00 PM) | Winter (10:00 AM - 07:00 PM).</li>
+            <li>The doctor shall provide round-the-clock emergency support as per the hospital duty roster.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h3>4. CODE OF CONDUCT & PATIENT SAFETY</h3>
+        <ul>
+            <li>Strict compliance with Patient Safety, Infection Control, and NABH guidelines is mandatory.</li>
+            <li>Patient confidentiality, proper documentation (IPD notes, consent, discharge summaries), and zero tolerance for workplace harassment must be maintained.</li>
+            <li>No kickbacks, commissions, or improper financial diversions shall be accepted.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h3>5. LEAVE & REMUNERATION</h3>
+        <ul>
+            <li>Eligible doctors are entitled to **34 days Annual Leave** per year as per hospital policy with prior approval and proper clinical handover.</li>
+            <li>Remuneration and professional fees will be paid as per the agreed appointment structure.</li>
+        </ul>
+    </div>
+
+    <div class="footer-box">
+        <strong>Important Note:</strong> This agreement must be read alongside the Doctor's Appointment Letter, HR Policy, and Hospital SOPs.
+    </div>
+
+    <!-- Acceptance Form -->
+    <form id="agreementForm" onsubmit="handleAgreementSubmit(event)">
+        <h3>DECLARATION & ACCEPTANCE</h3>
+        <p>
+            <input type="checkbox" id="agreeCheck" required> 
+            I have read, understood, and agree to comply with all the Service Terms & Conditions of CP Hospital.
+        </p>
+        <button type="submit" class="btn-submit">Accept & Submit Agreement</button>
+    </form>
+</div>
+
+<script>
+function handleAgreementSubmit(event) {
+    event.preventDefault();
+    alert("Agreement Accepted Successfully! Data sent to HRMS.");
+    // यहाँ आप अपने Backend API को डेटा भेजने का कोड लिख सकते हैं (जैसे fetch API)
+}
+</script>
+
+</body>
+</html>

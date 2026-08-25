@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  postgres_db:
+    image: postgres:15-alpine
+    container_name: cp_hospital_db
+    environment:
+      POSTGRES_USER: cp_admin
+      POSTGRES_PASSWORD: secure_hospital_password
+      POSTGRES_DB: cp_hospital_hrms
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: always
+
+  backend_api:
+    build: ./backend
+    container_name: cp_hospital_api
+    ports:
+      - "5000:5000"
+    environment:
+      - PORT=5000
+      - DATABASE_URL=postgres://cp_admin:secure_hospital_password@postgres_db:5432/cp_hospital_hrms
+    depends_on:
+      - postgres_db
+    restart: always
+
+volumes:
+  pgdata:
