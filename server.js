@@ -2,18 +2,21 @@ const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
 
-const app = express();
-app.use(express.static('public')); // (या जिस फोल्डर में आपका लोगो है, उसका नाम लिखें)
-
-const sqlite3 = require('sqlite3').verbose();
-
-// डेटाबेस फाइल बनाएं (यह आपके प्रोजेक्ट फोल्डर में अपने आप 'hospital.db' नाम की फाइल बना देगा)[cite: 2]
-const db = new sqlite3.Database('./hospital.db', (err) => {
-    if (err) {
-        console.error('❌ Database opening error: ', err.message);
-    } else {
-        console.log('📦 Connected to SQLite Database successfully!');
+// PostgreSQL क्लाउड डेटाबेस कनेक्शन
+const db = new Pool({
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+        rejectUnauthorized: false
     }
+});
+
+// डेटाबेस कनेक्शन चेक करने के लिए
+db.connect((err, client, release) => {
+    if (err) {
+        return console.error('❌ Database connection error: ', err.stack);
+    }
+    console.log('📦 Connected to PostgreSQL Cloud Database successfully!');
+    release();
 });
 
 // उदाहरण के लिए एक टेबल बनाना (जैसे स्टाफ या पेशेंट डेटा के लिए)[cite: 2]
