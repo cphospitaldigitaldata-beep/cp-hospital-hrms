@@ -1,7 +1,9 @@
 const express = require('express');
+const { Pool } = require('pg'); // <-- यह लाइन जोड़ना जरूरी है!
 const cors = require('cors');
-require('dotenv').config();
 
+const app = express();
+app.use(express.static('public'));
 // PostgreSQL क्लाउड डेटाबेस कनेक्शन
 const db = new Pool({
     connectionString: process.env.DATABASE_URL,
