@@ -5,7 +5,7 @@ const session = require('express-session');
 
 const app = express();
 
-// PostgreSQL Database Connection (केवल एक बार)
+// PostgreSQL Database Connection
 const db = new Pool({
     connectionString: process.env.DATABASE_URL,
     ssl: {
@@ -42,10 +42,10 @@ function isAuthenticated(req, res, next) {
     res.redirect('/login');
 }
 
-// स्टैटिक फाइलों और इमेज/लोगो के लिए
+// Static Files & Assets
 app.use(express.static('public'));
 
-// Login Page Route
+// Login Route Example
 app.get('/login', (req, res) => {
     res.send('<!DOCTYPE html><html><head><title>Login</title></head><body><h2>Login Page</h2></body></html>');
 });
@@ -57,6 +57,7 @@ app.listen(PORT, () => {
 });
 
 module.exports = db;
+
 // Session Middleware Configuration[cite: 2]
 app.use(session({
     secret: 'cp-hospital-secure-secret-key-2026',
