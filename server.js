@@ -42,8 +42,13 @@ function isAuthenticated(req, res, next) {
     res.redirect('/login');
 }
 
-// इमेजेज और स्टैटिक फाइलों के लिए
+// स्टैटिक फाइलों और इमेज/लोगो के लिए
 app.use(express.static('public'));
+
+// Login Page Route
+app.get('/login', (req, res) => {
+    res.send('<!DOCTYPE html><html><head><title>Login</title></head><body><h2>Login Page</h2></body></html>');
+});
 
 const PORT = process.env.PORT || 5000;
 
@@ -52,6 +57,24 @@ app.listen(PORT, () => {
 });
 
 module.exports = db;
+// Session Middleware Configuration[cite: 2]
+app.use(session({
+    secret: 'cp-hospital-secure-secret-key-2026',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false } // true कर सकते हैं यदि HTTPS हो[cite: 2]
+}));
+
+// Middleware to Check if User is Logged In[cite: 2]
+function isAuthenticated(req, res, next) {
+    if (req.session && req.session.user) {
+        return next();
+    }
+    res.redirect('/login');
+}
+// 👉 यह लाइन इमेजेज और लोगो दिखाने के लिए बहुत जरुरी है[cite: 2]
+app.use(express.static('public'));
+const PORT = process.env.PORT || 5000;
 
 // Middleware[cite: 2]
 app.use(express.json());
