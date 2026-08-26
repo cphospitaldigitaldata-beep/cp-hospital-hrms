@@ -2,7 +2,6 @@ const express = require('express');
 const cors = require('cors');
 const { Pool } = require('pg');
 const session = require('express-session');
-require('dotenv').config();
 
 const app = express();
 app.use(express.static('public')); // (या जिस फोल्डर में आपका लोगो है, उसका नाम लिखें)
