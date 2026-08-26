@@ -3964,9 +3964,6 @@ app.get('/emergency', isAuthenticated, (req, res) => {
         </html>
     `);
 });
-app.listen(PORT, () => {
-    console.log(`🚀 CP Hospital Server running on port ${PORT}`);
-});
 
 // =====================================================================
 // 🏥 CP HOSPITAL ENTERPRISE SUITE — ALL MODULES FULLY FUNCTIONAL BACKEND
