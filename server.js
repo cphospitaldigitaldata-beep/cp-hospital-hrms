@@ -46,8 +46,9 @@ function isAuthenticated(req, res, next) {
 app.use(express.static('public'));
 
 // Login Page Route
+// Login Page Route (अब यह public फोल्डर से आपकी असली login.html फाइल उठाएगा)
 app.get('/login', (req, res) => {
-    res.send('<!DOCTYPE html><html><head><title>Login</title></head><body><h2>Login Page</h2></body></html>');
+    res.sendFile(path.join(__dirname, 'public', 'login.html'));
 });
 
 const PORT = process.env.PORT || 5000;
