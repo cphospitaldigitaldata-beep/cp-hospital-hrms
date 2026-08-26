@@ -4,10 +4,8 @@ const { Pool } = require('pg');
 const session = require('express-session');
 
 const app = express();
-app.use(express.static('public')); // (या जिस फोल्डर में आपका लोगो है, उसका नाम लिखें)
 
-const { Pool } = require('pg');
-
+// PostgreSQL Database Connection (केवल एक बार)
 const db = new Pool({
     connectionString: process.env.DATABASE_URL,
     ssl: {
@@ -23,24 +21,37 @@ db.connect((err) => {
     }
 });
 
-// Session Middleware Configuration[cite: 2]
+// Middleware
+app.use(express.json());
+app.use(cors());
+app.use(express.urlencoded({ extended: true }));
+
+// Session Middleware Configuration
 app.use(session({
     secret: 'cp-hospital-secure-secret-key-2026',
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false } // true कर सकते हैं यदि HTTPS हो[cite: 2]
+    cookie: { secure: false }
 }));
 
-// Middleware to Check if User is Logged In[cite: 2]
+// Middleware to Check if User is Logged In
 function isAuthenticated(req, res, next) {
     if (req.session && req.session.user) {
         return next();
     }
     res.redirect('/login');
 }
-// 👉 यह लाइन इमेजेज और लोगो दिखाने के लिए बहुत जरुरी है[cite: 2]
+
+// इमेजेज और स्टैटिक फाइलों के लिए
 app.use(express.static('public'));
+
 const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});
+
+module.exports = db;
 
 // Middleware[cite: 2]
 app.use(express.json());
