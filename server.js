@@ -1,34 +1,31 @@
 const express = require('express');
-const { Pool } = require('pg'); //
 const cors = require('cors');
+require('dotenv').config();
 
 const app = express();
-app.use(express.static('public'));
-// PostgreSQL क्लाउड डेटाबेस कनेक्शन
-const db = new Pool({
-    connectionString: process.env.DATABASE_URL,
-    ssl: {
-        rejectUnauthorized: false
-    }
-});
+app.use(express.static('public')); // (या जिस फोल्डर में आपका लोगो है, उसका नाम लिखें)
 
-// डेटाबेस कनेक्शन चेक करने के लिए
-db.connect((err, client, release) => {
+const sqlite3 = require('sqlite3').verbose();
+
+// डेटाबेस फाइल बनाएं (यह आपके प्रोजेक्ट फोल्डर में अपने आप 'hospital.db' नाम की फाइल बना देगा)[cite: 2]
+const db = new sqlite3.Database('./hospital.db', (err) => {
     if (err) {
-        return console.error('❌ Database connection error: ', err.stack);
+        console.error('❌ Database opening error: ', err.message);
+    } else {
+        console.log('📦 Connected to SQLite Database successfully!');
     }
-    console.log('📦 Connected to PostgreSQL Cloud Database successfully!');
-    release();
 });
 
 // उदाहरण के लिए एक टेबल बनाना (जैसे स्टाफ या पेशेंट डेटा के लिए)[cite: 2]
-db.query(`CREATE TABLE IF NOT EXISTS staff (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(255),
-    role VARCHAR(255)
-)`)
-.then(() => console.log("Staff table checked/created successfully"))
-.catch(err => console.error("Table creation error:", err));
+db.run(`CREATE TABLE IF NOT EXISTS staff (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT,
+    role TEXT,
+    department TEXT
+)`);
+
+const session = require('express-session');
+
 // Session Middleware Configuration[cite: 2]
 app.use(session({
     secret: 'cp-hospital-secure-secret-key-2026',
