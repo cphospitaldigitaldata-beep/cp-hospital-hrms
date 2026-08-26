@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const { Pool } = require('pg');
 const session = require('express-session');
-
+const path = require('path');
 const app = express();
 
 // PostgreSQL Database Connection
