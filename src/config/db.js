@@ -1,17 +1,23 @@
-const sqlite3 = require('sqlite3').verbose();
-const path = require('path');
+const { Pool } = require('pg');
 
-const dbPath = path.resolve(__dirname, '../../hospital.db');
-const db = new sqlite3.Database(dbPath, (err) => {
-    if (err) {
-        console.error('❌ Database opening error: ', err.message);
-    } else {
-        console.log('📦 Connected to SQLite Database successfully!');
+const pool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+        rejectUnauthorized: false
     }
 });
 
-db.run(`CREATE TABLE IF NOT EXISTS staff_directory (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
+pool.connect((err) => {
+    if (err) {
+        console.error('❌ Database connection error: ', err.message);
+    } else {
+        console.log('📦 Connected to PostgreSQL Database successfully!');
+    }
+});
+
+// Create tables if they don't exist
+pool.query(`CREATE TABLE IF NOT EXISTS staff_directory (
+    id SERIAL PRIMARY KEY,
     employee_code TEXT,
     full_name TEXT,
     designation TEXT,
@@ -26,13 +32,19 @@ db.run(`CREATE TABLE IF NOT EXISTS staff_directory (
     rmc_nc_cert_path TEXT,          -- RMC / RNC / Pharmacy Council Certificate
     degree_diploma_path TEXT,       -- UG / PG Degree or Diploma
     experience_cert_path TEXT,      -- Experience Certificate
-    photo_id_path TEXT,             -- Photo ID (Voter ID / Aadhar / Passport)
+    photo_id_path TEXT,             -- Photo ID
     pan_photo_path TEXT,            -- PAN Card / Signature Photo
     bank_proof_path TEXT,           -- Passbook or Cancelled Cheque
     
     metadata TEXT,
     status TEXT,
     appointment_letter_path TEXT
-)`);
+)`, (err) => {
+    if (err) {
+        console.error('❌ Error creating table:', err.message);
+    } else {
+        console.log('📋 staff_directory table ready!');
+    }
+});
 
-module.exports = db;
+module.exports = pool;
