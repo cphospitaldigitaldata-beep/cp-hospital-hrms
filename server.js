@@ -22,15 +22,13 @@ db.connect((err, client, release) => {
 });
 
 // उदाहरण के लिए एक टेबल बनाना (जैसे स्टाफ या पेशेंट डेटा के लिए)[cite: 2]
-db.run(`CREATE TABLE IF NOT EXISTS staff (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT,
-    role TEXT,
-    department TEXT
-)`);
-
-const session = require('express-session');
-
+db.query(`CREATE TABLE IF NOT EXISTS staff (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255),
+    role VARCHAR(255)
+)`)
+.then(() => console.log("Staff table checked/created successfully"))
+.catch(err => console.error("Table creation error:", err));
 // Session Middleware Configuration[cite: 2]
 app.use(session({
     secret: 'cp-hospital-secure-secret-key-2026',
