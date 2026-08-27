@@ -253,6 +253,13 @@ app.get('/', isAuthenticated, (req, res) => {
                         <p>A Multispecialty Healthcare Center • सेवाहि परमो तपः</p>
                     </div>
                 </div>
+                <div class="user-greeting-box" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; background: white; padding: 15px 20px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.03);">
+    <div>
+        <h3 id="greetingMessage" style="margin: 0; color: #1a0f5e; font-size: 18px;">Welcome!</h3>
+        <p style="margin: 3px 0 0 0; color: #6b7280; font-size: 13px;">CP Hospital Enterprise Suite — All Systems Operational</p>
+    </div>
+    <div id="liveClock" style="font-weight: 600; color: #1b7a21; font-size: 15px; background: #f0fdf4; padding: 8px 15px; border-radius: 8px; border: 1px solid #bbf7d0;"></div>
+</div>
                 <div class="user-profile">
                     <div class="status-badge">🟢 ALL SYSTEMS ONLINE</div>
                     <div style="text-align: right;">
@@ -957,6 +964,37 @@ app.get('/ambulance-portal', isAuthenticated, (req, res) => {
         </html>
     `);
 });
+
+<script>
+    function updateClockAndGreeting() {
+        const now = new Date();
+        
+        // 1. लाइव क्लॉक अपडेट करें
+        let hours = now.getHours();
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const seconds = String(now.getSeconds()).padStart(2, '0');
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12;
+        hours = hours ? hours : 12; // the hour '0' should be '12'
+        const timeString = `${String(hours).padStart(2, '0')}:${minutes}:${seconds} ${ampm}`;
+        
+        const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
+        const dateString = now.toLocaleDateString('en-US', options);
+        
+        document.getElementById('liveClock').innerText = `${dateString} | ${timeString}`;
+
+        // 2. समय के हिसाब से ग्रीटिंग सेट करें (जैसे Good Morning, Good Afternoon)
+        const currentHour = now.getHours();
+        let greetingText = "Welcome back";
+        if (currentHour < 12) {
+            greetingText = "🌅 Good Morning, Abhishek Dixit";
+        } else if (currentHour < 17) {
+            greetingText = "☀️ Good Afternoon, Abhishek Dixit";
+        } else {
+            greetingText = "🌙 Good Evening, Abhishek Dixit";
+        }
+        document.getElementById('greetingMessage').innerText = greetingText;
+    }
 
 // ==========================================
 // 💻 Telemedicine Portal Frontend Route
