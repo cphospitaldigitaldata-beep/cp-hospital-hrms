@@ -3,6 +3,7 @@ const cors = require('cors');
 const { Pool } = require('pg');
 const session = require('express-session');
 const path = require('path');
+
 const app = express();
 
 // PostgreSQL Database Connection
@@ -26,12 +27,15 @@ app.use(express.json());
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 
+// Serve static images/files from public folder
+app.use(express.static(path.join(__dirname, 'public')));
+
 // Session Middleware Configuration
 app.use(session({
     secret: 'cp-hospital-secure-secret-key-2026',
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false } // true कर सकते हैं यदि HTTPS हो
+    cookie: { secure: false }
 }));
 
 // Middleware to Check if User is Logged In
@@ -42,24 +46,7 @@ function isAuthenticated(req, res, next) {
     res.redirect('/login');
 }
 
-// 👉 यह लाइन इमेजेज और लोगो दिखाने के लिए बहुत जरुरी है
-app.use(express.static('public'));
-
-// Login Page Route
-// Login Page Route (अब यह public फोल्डर से आपकी असली login.html फाइल उठाएगा)
-app.get('/login', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'login.html'));
-});
-
-const PORT = process.env.PORT || 5000;
-
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
-
-module.exports = db;
-
-// 1. Login Page Route[cite: 2]
+// 📌 Single Login Page Route (खूबसूरत डिजाइन के साथ)
 app.get('/login', (req, res) => {
     res.send(`
         <!DOCTYPE html>
@@ -73,7 +60,7 @@ app.get('/login', (req, res) => {
                 :root { --brand-blue: #1a0f5e; --brand-green: #1b7a21; }
                 body { font-family: 'Inter', sans-serif; background: #f4f7f6; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
                 .login-card { background: white; padding: 40px; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); width: 100%; max-width: 400px; border-top: 5px solid var(--brand-green); text-align: center; }
-                .login-card img { width: 60px; height: 60px; object-fit: contain; margin-bottom: 10px; }
+                .login-card img { width: 70px; height: 70px; object-fit: contain; margin-bottom: 10px; }
                 .login-card h2 { color: var(--brand-blue); margin-bottom: 5px; font-size: 22px; }
                 .login-card p { color: #6b7280; font-size: 13px; margin-bottom: 25px; }
                 .form-group { margin-bottom: 20px; text-align: left; }
@@ -87,7 +74,7 @@ app.get('/login', (req, res) => {
         </head>
         <body>
             <div class="login-card">
-                <img src="/logo.png" alt="CP Hospital Logo" style="width: 70px; height: 70px; object-fit: contain;" class="mb-2" />
+                <img src="/logo.png" alt="CP Hospital Logo" />
                 <h2>CP Hospital Suite</h2>
                 <p>Authorized Administrator Portal</p>
                 
@@ -109,6 +96,14 @@ app.get('/login', (req, res) => {
         </html>
     `);
 });
+
+// Start Server (यह सब रूट्स के बाद में होना चाहिए)
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});
+
+module.exports = db;
 
 // 2. Handle Login Submission[cite: 2]
 app.post('/login', express.urlencoded({ extended: true }), (req, res) => {
